@@ -5,4 +5,4 @@
 
 更多精彩欢迎关注公众号，微信扫描下方二维码或者在微信内搜索 **inspurer**；
 
-<center>![](qrcode.jpg)</center>
+![](qrcode.jpg)
