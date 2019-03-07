@@ -22,7 +22,7 @@
 |QQ交流群|[861016679](https://jq.qq.com/?_wv=1027&k=5Js6sKS)|
 |个人博客|[https://inspurer.github.io/](https://inspurer.github.io/)|
 
-更多精彩请关注公众号，微信扫描下方二维码或者在微信内搜索 **月小水长**；
+更多精彩请关注公众号，微信扫描下方二维码或者在微信内搜索 **公众号微信号：inspurer|公众号名称：月小水长**；
 
 <p align="center">
   <img src="qrcode.jpg"></a>
