@@ -59,51 +59,34 @@ def page_and_detail_parser(page_url):
         'Referer': 'https://bj.lianjia.com/ershoufang'
     }
 
-    try:
-        response = requests.get(page_url,headers=headers,timeout = 3)
-        doc = pq(response.text)
+    response = requests.get(page_url,headers=headers,timeout = 3)
+    doc = pq(response.text)
         # broswer.get(page_url)
         # print(page_url)
         # doc = pq(broswer.page_source)
-        i = 0
-        for item in doc(".sellListContent li").items():
-            i += 1
-            print(i)
-            if i == 31:
-                break
-            child_item = item(".noresultRecommend")
-            if child_item == None:
-                i -= 1
-            detail_url = child_item.attr("href")
-            print(detail_url)
-            try:
-                response = requests.get(url=detail_url, headers=headers,timeout = 3)
-                print(response.status_code)
-                detail_dict = dict()
-                doc = pq(response.text)
-                unit_price = doc(".unitPriceValue").text()
-                unit_price = unit_price[0:unit_price.index("元")]
-                title = doc("h1").text()
-                area = doc(".areaName .info a").eq(0).text().strip()
-                url = detail_url
-                detail_dict["title"] = title
-                detail_dict["area"] = area
-                detail_dict["price"] = unit_price
-                detail_dict["url"] = url
-
-                lock.acquire()
-
-                detail_list.append(detail_dict)
-
-                lock.release()
-
-                print(unit_price, title, area)
-
-            except:
-                print("获取详情页出错")
-
-    except:
-        print("获取列表页" + page_url + "出错")
+    for item in doc(".sellListContent > li").items():
+        child_item = item(".noresultRecommend")
+        detail_url = child_item.attr("href")
+        print(detail_url)
+        try:
+            response = requests.get(url=detail_url, headers=headers,timeout = 3)
+            detail_dict = dict()
+            doc = pq(response.text)
+            unit_price = doc(".unitPriceValue").text()
+            unit_price = unit_price[0:unit_price.index("元")]
+            title = doc("h1").text()
+            area = doc(".areaName .info a").eq(0).text().strip()
+            url = detail_url
+            detail_dict["title"] = title
+            detail_dict["area"] = area
+            detail_dict["price"] = unit_price
+            detail_dict["url"] = url
+            lock.acquire()
+            detail_list.append(detail_dict)
+            lock.release()
+            print(unit_price, title, area)
+        except:
+            print("获取详情页出错")
 
 def save_data(data,filename):
     with open(filename+".json", 'w', encoding="utf-8") as f:
@@ -111,12 +94,12 @@ def save_data(data,filename):
 
 def main():
 
-    city_list = ['bj','sh','gz','sz']
+    city_list = ['bj']
     for city in city_list:
 
         page_url_list = get_list_page_url(city)
 
-        pool = threadpool.ThreadPool(30)
+        pool = threadpool.ThreadPool(10)
         requests = threadpool.makeRequests(page_and_detail_parser, page_url_list)
         [pool.putRequest(req) for req in requests]
         pool.wait()
