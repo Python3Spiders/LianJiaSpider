@@ -2,7 +2,7 @@
 # author:           inspurer(月小水长)
 # pc_type           lenovo
 # create_date:      2019/2/27
-# file_name:        data_viewer.py
+# file_name:        data_analysis.py
 # github            https://github.com/inspurer
 # qq_mail           2391527690@qq.com
 
@@ -14,7 +14,7 @@ matplotlib.rcParams['font.sans-serif'] = ['SimHei']
 matplotlib.rcParams['axes.unicode_minus'] = False
 def load_data():
     global data,dic_data
-    with open("xm.json","r",encoding="utf-8") as f:
+    with open("bj.json","r",encoding="utf-8") as f:
         str = f.read()
         data = json.loads(str)
     dic_data = dict()
